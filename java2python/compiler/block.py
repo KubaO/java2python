@@ -16,7 +16,7 @@ from sys import modules
 from java2python.compiler import template, visitor
 
 
-def addTypeToModule((className, factoryName)):
+def addTypeToModule(className, factoryName):
     """ Constructs and adds a new type to this module. """
     bases = (getattr(template, className), getattr(visitor, className))
     newType = type(className, bases, dict(factoryName=factoryName))

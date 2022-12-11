@@ -13,7 +13,7 @@
 
 
 from functools import reduce, partial
-from itertools import ifilter, ifilterfalse, izip, tee
+from itertools import filterfalse, tee
 from logging import debug, warn
 from re import compile as recompile, sub as resub
 
@@ -48,7 +48,7 @@ class Base(object):
         cache, parser, comTypes = memo.comments, tree.parser, tokens.commentTypes
         comNew = lambda t:t.type in comTypes and (t.index not in cache)
 
-        for tok in ifilter(comNew, parser.input.tokens[memo.last:index]):
+        for tok in filter(comNew, parser.input.tokens[memo.last:index]):
             cache.add(tok.index)
 
             # loop over parents until we find the top expression
@@ -70,7 +70,7 @@ class Base(object):
     def stripComment(self, text):
         """ Regex substitutions for comments; removes comment characters. """
         subText = lambda value, regex:resub(regex, '', value)
-        for text in ifilter(unicode.strip, text.split('\n')):
+        for text in filter(unicode.strip, text.split('\n')):
             yield reduce(subText, self.commentSubs, text)
 
     def walk(self, tree, memo=None):
@@ -95,7 +95,7 @@ class Base(object):
 
     def zipWalk(self, nodes, visitors, memo):
         """ Walk the given nodes zipped with the given visitors. """
-        for node, visitor in izip(nodes, visitors):
+        for node, visitor in zip(nodes, visitors):
             visitor.walk(node, memo)
 
     def nodeTypeToString(self, node):
@@ -161,9 +161,9 @@ class ModifiersAcceptor(object):
     def acceptModifierList(self, node, memo):
         """ Accept and process class and method modifiers. """
         isAnno = lambda token:token.type==tokens.AT
-        for ano in ifilter(isAnno, node.children):
+        for ano in filter(isAnno, node.children):
             self.nodesToAnnos(ano, memo)
-        for mod in ifilterfalse(isAnno, node.children):
+        for mod in filterfalse(isAnno, node.children):
             self.nodesToModifiers(mod, node)
         return self
 

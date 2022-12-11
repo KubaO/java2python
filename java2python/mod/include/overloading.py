@@ -38,13 +38,6 @@ Python 2.5 is required due to the use of predicates any() and all().
 
 from types import MethodType as instancemethod
 
-import sys
-if sys.version_info[0] < 3:
-    # Make the environment more like Python 3.0
-    __metaclass__ = type
-    from itertools import izip as zip
-
-
 class overloaded:
     """An implementation of overloaded functions."""
 

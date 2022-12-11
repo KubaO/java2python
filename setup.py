@@ -81,6 +81,6 @@ setup(
         ('doc', doc_files()),
         ],
 
-    install_requires=['antlr_python_runtime==3.1.3'],
+    install_requires=['antlr-python3-runtime>=3.4'],
 
     )

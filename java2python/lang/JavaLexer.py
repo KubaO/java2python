@@ -2,7 +2,8 @@
 
 import sys
 from antlr3 import *
-from antlr3.compat import set, frozenset
+
+from java2python.lang.compat import version_str_to_tuple
 
 
 # for convenience in actions
