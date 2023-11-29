@@ -6,8 +6,7 @@ This is all very ordinary.  We import the package bits, open and read
 a file, translate it, and write it out.
 
 """
-import os.path
-import sys
+import sys, os
 from argparse import ArgumentParser, ArgumentTypeError
 from collections import defaultdict
 from logging import _nameToLevel as logLevels, exception, warning, info, basicConfig
@@ -61,8 +60,8 @@ def runOneOrMany(options):
     """ Runs our main transformer with each of the input files. """
     infile, outfile = options.inputfile, options.outputfile
 
-    if infile and not os.path.isfile(infile) and path.isdir(infile):
-        if outfile and not os.path.isfile(outfile) and not path.isdir(outfile):
+    if isinstance(infile, os.PathLike|str) and path.isdir(infile):
+        if isinstance(outfile, os.PathLike|str) and not path.isdir(outfile):
             warning('Must specify output directory or stdout when using input directory.')
             return 2
         def walker(arg, dirname, files):
@@ -70,7 +69,7 @@ def runOneOrMany(options):
                 fullname = path.join(dirname, name)
                 options.inputfile = fullname
                 info('opening %s', fullname)
-                if outfile and outfile != '-' and not isinstance(outfile, file):
+                if isinstance(outfile, os.PathLike|str) and outfile != '-':
                     full = path.abspath(path.join(outfile, fullname))
                     head, tail = path.split(full)
                     tail = path.splitext(tail)[0] + '.py'
@@ -90,9 +89,9 @@ def runTransform(options):
     timed['overall']
 
     filein = fileout = filedefault = '-'
-    if options.inputfile and not os.path.isfile(options.inputfile):
+    if options.inputfile and isinstance(options.inputfile, os.PathLike|str):
         filein = options.inputfile
-    if options.outputfile and not os.path.isfile(options.outputfile):
+    if options.outputfile and isinstance(options.outputfile, os.PathLike|str):
         fileout = options.outputfile
     elif fileout != filedefault:
         fileout = '%s.py' % (path.splitext(filein)[0])
