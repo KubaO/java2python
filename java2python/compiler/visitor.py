@@ -70,7 +70,7 @@ class Base(object):
     def stripComment(self, text):
         """ Regex substitutions for comments; removes comment characters. """
         subText = lambda value, regex:resub(regex, '', value)
-        for text in filter(unicode.strip, text.split('\n')):
+        for text in filter(str.strip, text.split('\n')):
             yield reduce(subText, self.commentSubs, text)
 
     def walk(self, tree, memo=None):

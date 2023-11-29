@@ -16,6 +16,7 @@
 from io import StringIO
 from functools import partial
 from itertools import chain
+from functools import reduce
 
 from java2python.lang import tokens
 from java2python.lib import FS, colors
@@ -74,7 +75,7 @@ class FactoryTypeDetector(type):
             pass
 
 
-class Base(object):
+class Base(metaclass=FactoryTypeDetector):
     """ Base -> base class for formatting Python output.
 
     This class defines a large set of attributes and methods for the

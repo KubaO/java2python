@@ -15,15 +15,15 @@
 from sys import modules
 from java2python.compiler import template, visitor
 
-
-def addTypeToModule(className, factoryName):
+def addTypeToModule(className_factoryName):
     """ Constructs and adds a new type to this module. """
+    className, factoryName = className_factoryName
     bases = (getattr(template, className), getattr(visitor, className))
     newType = type(className, bases, dict(factoryName=factoryName))
     setattr(modules[__name__], className, newType)
 
 
-map(addTypeToModule, (
+any(map(addTypeToModule, (
         ('Annotation',    'at'),
         ('Class',         'klass'),
         ('Comment',       'comment'),
@@ -36,3 +36,4 @@ map(addTypeToModule, (
         ('Statement',     'statement'),
         )
     )
+)
