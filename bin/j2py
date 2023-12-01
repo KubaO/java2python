@@ -104,6 +104,7 @@ def runTransform(options):
             if path.exists(dirname):
                 configs.insert(0, dirname)
     if options.includedefaults:
+        configs = configs.copy()
         configs.insert(0, 'java2python.config.default')
 
     try:
