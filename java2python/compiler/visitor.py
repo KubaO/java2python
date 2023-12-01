@@ -132,7 +132,7 @@ class TypeAcceptor(object):
     _acceptInterface = makeAcceptType('interface')
 
     def acceptInterface(self, node, memo):
-        module = self.parents(lambda x:x.isModule).next()
+        module = next(self.parents(lambda x:x.isModule))
         module.needsAbstractHelpers = True
         return self._acceptInterface(node, memo)
 
@@ -407,7 +407,7 @@ class MethodContent(VarAcceptor, Base):
 
     def acceptContinue(self, node, memo):
         """ Accept and process a continue statement. """
-        parent = node.parents(lambda x: x.type in {tokens.FOR, tokens.FOR_EACH, tokens.DO, tokens.WHILE}).next()
+        parent = next(node.parents(lambda x: x.type in {tokens.FOR, tokens.FOR_EACH, tokens.DO, tokens.WHILE}))
         if parent.type == tokens.FOR:
             updateStat = self.factory.expr(parent=self)
             updateStat.walk(parent.firstChildOfType(tokens.FOR_UPDATE), memo)
@@ -561,7 +561,7 @@ class MethodContent(VarAcceptor, Base):
 
     def acceptSynchronized(self, node, memo):
         """ Accept and process a synchronized statement (not a modifier). """
-        module = self.parents(lambda x:x.isModule).next()
+        module = next(self.parents(lambda x:x.isModule))
         module.needsSyncHelpers = True
         if node.parent.type == tokens.MODIFIER_LIST:
             # Skip any synchronized modifier
@@ -743,7 +743,7 @@ class Expression(Base):
                 name = node.firstChildOfType(tokens.IDENT).text
                 handler = self.configHandler('VariableNaming')
                 rename = handler(name)
-                block = self.parents(lambda x:x.isMethod).next()
+                block = next(self.parents(lambda x:x.isMethod))
                 if pre:
                     left = name
                 else:
@@ -768,7 +768,7 @@ class Expression(Base):
         self.fs = 'bsr(' + FS.l + ', ' + FS.r + ')'
         self.left, self.right = visitors = factory(parent=self), factory()
         self.zipWalk(node.children, visitors, memo)
-        module = self.parents(lambda x:x.isModule).next()
+        module = next(self.parents(lambda x:x.isModule))
         module.needsBsrFunc = True
 
     def acceptBitShiftRightAssign(self, node, memo):
@@ -777,7 +777,7 @@ class Expression(Base):
         self.fs = FS.l + ' = bsr(' + FS.l + ', ' + FS.r + ')'
         self.left, self.right = visitors = factory(parent=self), factory()
         self.zipWalk(node.children, visitors, memo)
-        module = self.parents(lambda x:x.isModule).next()
+        module = next(self.parents(lambda x:x.isModule))
         module.needsBsrFunc = True
 
     def acceptClassConstructorCall(self, node, memo):
@@ -853,12 +853,12 @@ class Expression(Base):
 
     def acceptSuper(self, node, memo):
         """ Accept and process a super expression. """
-        cls = self.parents(lambda c:c.isClass).next()
+        cls = next(self.parents(lambda c:c.isClass))
         self.right = self.factory.expr(fs='super({name}, self)'.format(name=cls.name))
 
     def acceptSuperConstructorCall(self, node, memo):
         """ Accept and process a super constructor call. """
-        cls = self.parents(lambda c:c.isClass).next()
+        cls = next(self.parents(lambda c:c.isClass))
         fs = 'super(' + FS.l + ', self).__init__(' + FS.r + ')'
         self.right = self.factory.expr(fs=fs, left=cls.name)
         return self.right

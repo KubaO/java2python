@@ -137,7 +137,7 @@ def maybeSynchronizedMethod(method):
 
 
 def globalNameCounter(original, counter=count()):
-    return '__{0}_{1}'.format(original, counter.next())
+    return '__{0}_{1}'.format(original, next(counter))
 
 
 def getBsrSrc():
