@@ -240,6 +240,7 @@ class JavaParser(Parser):
     grammarFileName = "Java.g"
     antlr_version = version_str_to_tuple("3.1.3 Mar 18, 2009 10:09:25")
     antlr_version_str = "3.1.3 Mar 18, 2009 10:09:25"
+    api_version = 1
     tokenNames = tokenNames
 
     def __init__(self, input, state=None, *args, **kwargs):
