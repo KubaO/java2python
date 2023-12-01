@@ -305,10 +305,10 @@ class Expression(Base):
     def __repr__(self):
         """ Returns the debug string representation of this template. """
         parts, parent, showfs = [colors.blue(self.typeName)], self.parent, True
-        if isinstance(self.left, (basestring, )) and self.left:
+        if isinstance(self.left, (str, )) and self.left:
             parts.append(colors.white('left:') + colors.yellow(self.left))
             showfs = False
-        if isinstance(self.right, (basestring, )) and self.right:
+        if isinstance(self.right, (str, )) and self.right:
             parts.append(colors.white('right:') + colors.yellow(self.right))
             showfs = False
         if self.modifiers:

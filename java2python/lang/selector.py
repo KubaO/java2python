@@ -90,7 +90,7 @@ class Token(Selector):
         self.attrs = attrs
         ## we support strings so that the client can refer to the
         ## token name that way instead of via lookup or worse, integer.
-        if isinstance(attrs.get('type'), (basestring, )):
+        if isinstance(attrs.get('type'), (str, )):
             self.attrs['type'] = getattr(tokens, attrs.get('type'))
 
     def __call__(self, tree):
